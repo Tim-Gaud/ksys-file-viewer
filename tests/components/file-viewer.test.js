@@ -1,8 +1,13 @@
 // Copyright (c) 2017 PlanGrid, Inc.
 
 import React from 'react';
-import { mount } from 'enzyme';
-import FileViewer from 'components/file-viewer';
+import { mount, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import FileViewer from '../../src/components/file-viewer';
+
+beforeAll(() => {
+  configure({ adapter: new Adapter() })
+})
 
 describe('file-viewer', () => {
   it('renders without crashing', () => {

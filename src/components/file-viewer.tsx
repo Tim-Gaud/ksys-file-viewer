@@ -1,7 +1,6 @@
 // Copyright (c) 2017 PlanGrid, Inc.
 
 import React, { Component } from 'react';
-import 'styles/main.scss';
 import withFetching from './fetch-wrapper';
 
 import {
@@ -25,7 +24,6 @@ export interface IFileViewerProps {
 }
 
 interface IFileViewerState {
-  loading: boolean;
   width: number;
   height: number;
 }
@@ -34,9 +32,8 @@ class FileViewer extends Component<IFileViewerProps, IFileViewerState> {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
       width: 0,
-      height: 0
+      height: 0,
     };
   }
 

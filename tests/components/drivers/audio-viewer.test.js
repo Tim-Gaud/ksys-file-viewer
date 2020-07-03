@@ -3,7 +3,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { AudioViewer } from 'components/drivers';
+import { AudioViewer } from '../../../src/components/drivers';
 
 describe('AudioViewer', () => {
   it('matches snapshot', () => {

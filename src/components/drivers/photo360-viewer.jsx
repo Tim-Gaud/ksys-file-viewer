@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import * as THREE from 'three';
-import 'styles/photo360.scss';
 
 export default class extends Component {
   constructor(props) {

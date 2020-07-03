@@ -1,8 +1,13 @@
 // Copyright (c) 2017 PlanGrid, Inc.
 
 import React from 'react';
-import { mount } from 'enzyme';
-import { PDFPage } from 'components/drivers/pdf-viewer';
+import { mount, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import { PDFPage } from '../../src/components/drivers/pdf-viewer';
+
+beforeAll(() => {
+  configure({ adapter: new Adapter() })
+})
 
 describe('pdf-viewer', () => {
   let spy;

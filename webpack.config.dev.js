@@ -76,12 +76,6 @@ module.exports = {
         ],
       },
       {
-        test: /\.(js|ts)x?$/,
-        loader: 'eslint-loader',
-        include: path.resolve(__dirname, 'src'),
-        enforce: 'pre',
-      },
-      {
         test: [/\.wexbim$/, /\.jpg$/, /\.docx$/, /\.csv$/, /\.mp4$/, /\.xlsx$/, /\.doc$/, /\.avi$/, /\.webm$/, /\.mov$/, /\.mp3$/, /\.rtf$/, /\.pdf$/],
         loader: 'file-loader',
       },

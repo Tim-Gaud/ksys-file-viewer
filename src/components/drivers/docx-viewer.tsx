@@ -2,8 +2,6 @@
 
 import React, { Component } from 'react';
 import mammoth from 'mammoth';
-
-import 'styles/docx.scss';
 import Loading from '../loading';
 import { IFileViewerProps } from '../file-viewer';
 

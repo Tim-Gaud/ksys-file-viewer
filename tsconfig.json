@@ -5,13 +5,13 @@
         "strictNullChecks": true,   // enable strict null checks as a best practice
         "module": "commonjs",       // specify module code generation
         "jsx": "react",             // use typescript to transpile jsx to js
-        "target": "esnext",         // specify ECMAScript target version
+        "target": "es2020",         // specify ECMAScript target version
 		"allowJs": true,            // allow a partial TypeScript and JavaScript codebase
 		"experimentalDecorators": true,
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
-		"lib": ["dom", "es2018"],
+		"lib": ["dom", "es2020"],
 		"importHelpers": true,
     },
     "include": [

@@ -3,7 +3,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import Error from 'components/error';
+import Error from '../../src/components/error';
 
 describe('Error component', () => {
   it('matches stored snapshot', () => {

@@ -1,4 +1,9 @@
 {
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "rules": {
     "react/prop-types": [0, {"customValidators": ["skipUndeclared"]}],
     "jsx-a11y/media-has-caption": [0],
@@ -32,7 +37,11 @@
       }
    ]
   },
-  "extends": "airbnb",
+  "extends":  [
+    "airbnb",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "globals": {
     "XMLHttpRequest": true,
     "XDomainRequest": true,

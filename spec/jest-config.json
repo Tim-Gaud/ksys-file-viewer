@@ -1,0 +1,11 @@
+{
+    "rootDir": "../",
+    "transform": {
+        ".(t|j)sx?$": "ts-jest"
+    },
+    "testRegex": ".*\\.test\\.(ts|js)$",
+    "moduleFileExtensions": ["tsx", "ts", "jsx", "js", "json"],
+    "roots": ["<rootDir>/"],
+    "modulePaths": ["<rootDir>/"],
+    "coverageReporters": ["json", "lcov", "text", "html"]
+}
