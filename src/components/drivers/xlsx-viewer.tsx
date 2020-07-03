@@ -1,19 +1,33 @@
 // Copyright (c) 2017 PlanGrid, Inc.
 
-import React, { Component } from 'react';
+import React, { Component, ReactElement } from 'react';
 import XLSX from 'xlsx';
 
 import CsvViewer from './csv-viewer';
+import { IFileViewerProps } from '../file-viewer';
 
-class XlxsViewer extends Component {
+interface IXlxsViewerProps extends IFileViewerProps {
+  width: number;
+  height: number;
+  data: ArrayBuffer;
+}
+
+interface IXlxsViewerState {
+  sheets: string[];
+  names: string[];
+  curSheetIndex: number;
+}
+
+
+class XlxsViewer extends Component<IXlxsViewerProps, IXlxsViewerState> {
   constructor(props) {
     super(props);
     this.state = this.parse();
   }
 
-  parse() {
+  parse(): IXlxsViewerState {
     const dataArr = new Uint8Array(this.props.data);
-    const arr = [];
+    const arr: string[] = [];
 
     for (let i = 0; i !== dataArr.length; i += 1) {
       arr.push(String.fromCharCode(dataArr[i]));
@@ -28,7 +42,7 @@ class XlxsViewer extends Component {
     return { sheets, names, curSheetIndex: 0 };
   }
 
-  renderSheetNames(names) {
+  renderSheetNames(names: string[]): ReactElement {
     const sheets = names.map((name, index) => (
       <input
         key={name}
@@ -47,7 +61,7 @@ class XlxsViewer extends Component {
     );
   }
 
-  renderSheetData(sheet) {
+  renderSheetData(sheet: string): ReactElement {
     const csvProps = Object.assign({}, this.props, { data: sheet });
     return (
       <CsvViewer {...csvProps} />

@@ -7,35 +7,44 @@ const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  mode: 'development',
   devtool: 'cheap-module-source-map',
-
+  context: path.resolve(__dirname),
+  devServer: { hot: true },
   entry: {
     app: [
-      'webpack-dev-server/client?http://localhost:8081/',
-      'webpack/hot/dev-server',
-      path.resolve(__dirname, './src/app.js'),
+      'webpack-dev-server/client?http://localhost:8081',
+      './src/app',
     ],
   },
   output: {
     path: path.resolve(__dirname, './build'),
     pathinfo: true,
-    filename: 'app/js/[name].bundle.js',
+    filename: '[name].bundle.js',
     publicPath: '/',
   },
   resolve: {
     modules: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'example_files'), 'node_modules'],
-    extensions: ['.js', '.json', '.jsx'],
+    extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
   },
 
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(ts|js)x?$/,
         include: path.resolve(__dirname, './src'),
-        loader: 'babel-loader',
-        options: {
-          cacheDirectory: true,
-        },
+        use: [
+          { 
+            loader: 'ts-loader',
+            options: 'transpileOnly'
+          },
+          { 
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+            },
+          }
+        ],
       },
       {
         test: /\.(css|scss)$/,
@@ -67,7 +76,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|ts)x?$/,
         loader: 'eslint-loader',
         include: path.resolve(__dirname, 'src'),
         enforce: 'pre',

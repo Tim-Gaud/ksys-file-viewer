@@ -4,16 +4,38 @@ import React, { Component } from 'react';
 
 import ReactDataGrid from 'react-data-grid';
 import CSV from 'comma-separated-values';
+import { IFileViewerProps } from '../file-viewer';
 
-class CsvViewer extends Component {
+interface ICsvViewerProps extends IFileViewerProps {
+  width: number;
+  height: number;
+  data: string;
+}
+
+interface ICsvViewerState {
+  rows: row[];
+  columns: column[];
+}
+
+interface column {
+  key: string;
+  name: string;
+  resizable: boolean;
+  sortable: boolean;
+  filterable: boolean;
+}
+
+type row = Record<string, string>
+
+class CsvViewer extends Component<ICsvViewerProps, ICsvViewerState>{
 
   static parse(data) {
-    const rows = [];
-    const columns = [];
+    const rows: row[] = [];
+    const columns: column[] = [];
 
     new CSV(data).forEach((array) => {
       if (columns.length < 1) {
-        array.forEach((cell, idx) => {
+        array.forEach((cell: string, idx: number) => {
           columns.push({
             key: `key-${idx}`,
             name: cell,
@@ -24,7 +46,7 @@ class CsvViewer extends Component {
         });
       } else {
         const row = {};
-        array.forEach((cell, idx) => {
+        array.forEach((cell: string, idx: number) => {
           row[`key-${idx}`] = cell;
         });
         rows.push(row);

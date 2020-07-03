@@ -5,7 +5,14 @@ import React, { Component } from 'react';
 import 'styles/video.scss';
 import Loading from '../loading';
 
-class VideoViewer extends Component {
+import { IFileViewerProps } from '../file-viewer';
+
+interface IVideoViewerProps extends IFileViewerProps {
+  width: number;
+  height: number;
+}
+
+class VideoViewer extends Component<IVideoViewerProps, { loading: boolean }> {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,8 +40,7 @@ class VideoViewer extends Component {
           <video
             style={{ visibility }}
             controls
-            type={`video/${this.props.fileType}`}
-            onCanPlay={e => this.onCanPlay(e)}
+            onCanPlay={() => this.onCanPlay()}
             src={this.props.filePath}
           >
             Video playback is not supported by your browser.

@@ -16,7 +16,7 @@ const config = {
   },
   resolve: {
     modules: [path.resolve(__dirname, './src'), 'node_modules'],
-    extensions: ['.js', '.jsx', '.json'],
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
   externals: [
     {
@@ -39,12 +39,21 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(ts|js)x?$/,
         include: path.resolve(__dirname, './src'),
-        loader: 'babel-loader',
-        options: {
-          cacheDirectory: true,
-        },
+        exclude: /node_modules/,
+        use: [
+          { 
+            loader: 'ts-loader',
+            options: 'transpileOnly'
+          },
+          { 
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+            },
+          }
+        ],
       },
       {
         test: /\.(css|scss)$/,
@@ -82,6 +91,12 @@ const config = {
           limit: 10000, // if file <=10kb
         },
       },
+      { 
+        enforce: "pre", 
+        test: /\.js$/, 
+        exclude: /node_modules/, 
+        loader: "source-map-loader" 
+      }
     ],
   },
 };

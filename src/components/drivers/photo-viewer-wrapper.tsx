@@ -6,15 +6,29 @@ import * as THREE from 'three';
 import PhotoViewer from './photo-viewer';
 import Photo360Viewer from './photo360-viewer';
 import Loading from '../loading';
+import { IFileViewerProps } from '../file-viewer';
 
-function getPhotoDriver(width, height, fileType) {
+interface IPhotoViewerWrapperProps extends IFileViewerProps {
+  width: number;
+  height: number;
+}
+
+interface IPhotoViewerWrapperState {
+  originalWidth: number;
+  originalHeight: number
+  imageLoaded: boolean;
+  texture?: THREE.Texture;
+}
+
+
+function getPhotoDriver(width: number, height: number, fileType: string) {
   if (fileType === 'jpg' && window.Math.abs((width / height) - 2) <= 0.01) {
     return Photo360Viewer;
   }
   return PhotoViewer;
 }
 
-export default class PhotoViewerWrapper extends Component {
+export default class PhotoViewerWrapper extends Component<IPhotoViewerWrapperProps, IPhotoViewerWrapperState> {
   constructor(props) {
     super(props);
 

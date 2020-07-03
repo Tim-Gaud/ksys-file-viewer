@@ -5,8 +5,15 @@ import mammoth from 'mammoth';
 
 import 'styles/docx.scss';
 import Loading from '../loading';
+import { IFileViewerProps } from '../file-viewer';
 
-export default class extends Component {
+interface IDocxViewerProps extends IFileViewerProps {
+  width: number;
+  height: number;
+}
+
+
+export default class extends Component<IDocxViewerProps> {
   componentDidMount() {
     const jsonFile = new XMLHttpRequest();
     jsonFile.open('GET', this.props.filePath, true);
@@ -22,7 +29,10 @@ export default class extends Component {
           const docEl = document.createElement('div');
           docEl.className = 'document-container';
           docEl.innerHTML = result.value;
-          document.getElementById('docx').innerHTML = docEl.outerHTML;
+          const docX = document.getElementById('docx');
+          if(docX) {
+            docX.innerHTML = docEl.outerHTML;
+          }
         })
         .catch((a) => {
           console.log('alexei: something went wrong', a);

@@ -5,7 +5,14 @@ import XViewer from '../../utils/xbim-viewer.debug.bundle';
 
 import Error from '../error';
 
-export default class XBimViewer extends Component {
+import { IFileViewerProps } from '../file-viewer';
+
+interface IXBimViewerProps extends IFileViewerProps {
+  width: number;
+  height: number;
+}
+
+export default class XBimViewer extends Component<IXBimViewerProps, { error: boolean }> {
   // TODO check for webgl compatibility
   constructor(props) {
     super(props);

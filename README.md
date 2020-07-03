@@ -1,7 +1,7 @@
 
-# react-file-viewer
+# ksys-file-viewer
 
-Extendable file viewer for web
+Extendable file viewer for web. Forked from [react-file-viewer](https://github.com/plangrid/react-file-viewer)
 
 ## Supported file formats:
 

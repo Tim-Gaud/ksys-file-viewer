@@ -1755,7 +1755,7 @@ xViewer.prototype.set = function (settings) {
 * @param {Any} tag [optional] - Tag to be used to identify the model in {@link xViewer#event:loaded loaded} event.
 * @fires xViewer#loaded
 */
-xViewer.prototype.load = function (model, tag) {
+xViewer.prototype.load = function (model, tag = undefined) {
     if (typeof (model) == 'undefined') throw 'You have to specify model to load.';
     if (typeof(model) != 'string' && !(model instanceof Blob) && !(model instanceof File))
         throw 'Model has to be specified either as a URL to wexBIM file or Blob object representing the wexBIM file.';
@@ -2535,7 +2535,7 @@ xViewer.prototype._getID = function (x, y) {
 * @function xViewer#start
 * @param {Number} id [optional] - Optional ID of the model to be stopped. You can get this ID from {@link xViewer#event:loaded loaded} event.
 */
-xViewer.prototype.start = function (id) {
+xViewer.prototype.start = function (id = undefined) {
     if (typeof (id) !== "undefined") {
         var model = this._handles.filter(function (h) { return h.id === id; }).pop();
         if (typeof (model) === "undefined")

@@ -1,7 +1,6 @@
 // Copyright (c) 2017 PlanGrid, Inc.
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import 'styles/main.scss';
 import withFetching from './fetch-wrapper';
 
@@ -15,13 +14,29 @@ import {
   UnsupportedViewer,
   PhotoViewerWrapper,
   AudioViewer,
-} from './drivers';
+} from './drivers/index';
 
-class FileViewer extends Component {
+export interface IFileViewerProps {
+  fileType: string;
+  filePath: string;
+  onError?: (e?: Event) => null;
+  errorComponent?: null;
+  unsupportedComponent?: null;
+}
+
+interface IFileViewerState {
+  loading: boolean;
+  width: number;
+  height: number;
+}
+
+class FileViewer extends Component<IFileViewerProps, IFileViewerState> {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
+      width: 0,
+      height: 0
     };
   }
 
@@ -38,8 +53,7 @@ class FileViewer extends Component {
         return withFetching(CsvViewer, this.props);
       }
       case 'xlsx': {
-        const newProps = Object.assign({}, this.props, { responseType: 'arraybuffer' });
-        return withFetching(XlsxViewer, newProps);
+        return withFetching(XlsxViewer, { responseType: 'arraybuffer', ...this.props });
       }
       case 'jpg':
       case 'jpeg':
@@ -71,7 +85,7 @@ class FileViewer extends Component {
   }
 
   render() {
-    const Driver = this.getDriver(this.props);
+    const Driver = this.getDriver();
     return (
       <div className="pg-viewer-wrapper">
         <div className="pg-viewer" id="pg-viewer">
@@ -82,19 +96,4 @@ class FileViewer extends Component {
   }
 }
 
-FileViewer.propTypes = {
-  fileType: PropTypes.string.isRequired,
-  filePath: PropTypes.string.isRequired,
-  onError: PropTypes.func,
-  errorComponent: PropTypes.element,
-  unsupportedComponent: PropTypes.element,
-};
-
-FileViewer.defaultProps = {
-  onError: () => null,
-  errorComponent: null,
-  unsupportedComponent: null,
-};
-
 export default FileViewer;
-module.exports = FileViewer;

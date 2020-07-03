@@ -4,15 +4,33 @@ import React from 'react';
 import VisibilitySensor from 'react-visibility-sensor';
 import { PDFJS } from 'pdfjs-dist/build/pdf.combined';
 import 'pdfjs-dist/web/compatibility';
+import { IFileViewerProps } from '../file-viewer';
 
 PDFJS.disableWorker = true;
 const INCREASE_PERCENTAGE = 0.2;
 const DEFAULT_SCALE = 1.1;
 
-export class PDFPage extends React.Component {
+interface IPDFPageProps {
+  disableVisibilityCheck: boolean;
+  zoom: any;
+  index: number;
+  pdf: any;
+  containerWidth: any
+}
+
+interface IPDFPageState {
+  isVisible: boolean;
+}
+
+export class PDFPage extends React.Component<IPDFPageProps, IPDFPageState> {
+  canvas;
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isVisible: false
+    };
+
+    this.canvas = document.getElementById('temp-canvas');
     this.onChange = this.onChange.bind(this);
   }
 
@@ -63,9 +81,9 @@ export class PDFPage extends React.Component {
     const { index } = this.props;
     return (
       <div key={`page-${index}`} className="pdf-canvas">
-        {this.props.disableVisibilityCheck ? <canvas ref={node => this.canvas = node} width="670" height="870" /> : (
+        {this.props.disableVisibilityCheck ? <canvas id={'temp-canvas'} ref={node => this.canvas = node} width="670" height="870" /> : (
           <VisibilitySensor onChange={this.onChange} partialVisibility >
-            <canvas ref={node => this.canvas = node} width="670" height="870" />
+            <canvas id={'temp-canvas'} ref={node => this.canvas = node} width="670" height="870" />
           </VisibilitySensor>
             )
         }
@@ -74,10 +92,17 @@ export class PDFPage extends React.Component {
   }
 }
 
-export default class PDFDriver extends React.Component {
+interface IPDFDriverProps extends IFileViewerProps {
+  width: number;
+  height: number;
+  disableVisibilityCheck: boolean;
+}
+
+export default class PDFDriver extends React.Component<IPDFDriverProps, any> {
+  container;
   constructor(props) {
     super(props);
-
+    this.container = document.getElementById('pg-viewer');
     this.state = {
       pdf: null,
       zoom: 0,
@@ -89,9 +114,14 @@ export default class PDFDriver extends React.Component {
     this.resetZoom = this.resetZoom.bind(this);
   }
 
+  static defaultProps = {
+    disableVisibilityCheck: false,
+  }
+
   componentDidMount() {
     const { filePath } = this.props;
     const containerWidth = this.container.offsetWidth;
+    
     PDFJS.getDocument(filePath, null, null, this.progressCallback.bind(this)).then((pdf) => {
       this.setState({ pdf, containerWidth });
     });
@@ -163,7 +193,3 @@ export default class PDFDriver extends React.Component {
     );
   }
 }
-
-PDFDriver.defaultProps = {
-  disableVisibilityCheck: false,
-};
