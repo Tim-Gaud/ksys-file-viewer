@@ -2,13 +2,13 @@
 
 ## 1. Read the README
 
-Please [read the README](https://github.com/plangrid/react-file-viewer/blob/master/README.md) before logging new issues, even if you think you have found a bug.
+Please [read the README](https://github.com/Tim-Gaud/ksys-file-viewer/blob/master/README.md) before logging new issues, even if you think you have found a bug.
 
 Issues that ask questions answered in the README will be closed without elaboration.
 
 ## 2. Search for Duplicates
 
-[Search the existing issues](https://github.com/plangrid/react-file-viewer/issues) before logging a new one.
+[Search the existing issues](https://github.com/Tim-Gaud/ksys-file-viewer/issues) before logging a new one.
 
 ## 3. Did you find a bug?
 
@@ -20,7 +20,7 @@ When logging a bug, please be sure to include the following:
 ## 4. Do you have a suggestion?
 
 We also accept suggestions in the issue tracker.
-Be sure to [check the README](https://github.com/plangrid/react-file-viewer/blob/master/README.md) first.
+Be sure to [check the README](https://github.com/Tim-Gaud/ksys-file-viewer/blob/master/README.md) first.
 
 In general, things we find useful when reviewing suggestions are:
 * A description of the problem you're trying to solve
@@ -33,15 +33,15 @@ In general, things we find useful when reviewing suggestions are:
 
 ## Contributing bug fixes
 
-React file viewer is currently accepting contributions in the form of bug fixes. A bug must have an issue tracking associated with it in [issues list](https://github.com/plangrid/react-file-viewer/issues). Your pull request should include a link to the bug that you are fixing. If you've submitted a PR for a bug, please post a comment in the bug to avoid duplication of effort.
+React file viewer is currently accepting contributions in the form of bug fixes. A bug must have an issue tracking associated with it in [issues list](https://github.com/Tim-Gaud/ksys-file-viewer/issues). Your pull request should include a link to the bug that you are fixing. If you've submitted a PR for a bug, please post a comment in the bug to avoid duplication of effort.
 
 ## Contributing features
 
-Features (things that add new or improved functionality) may be accepted, but will need to first be reviewed and approved by a [team member](https://github.com/plangrid/react-file-viewer/blob/master/AUTHORS.md). 
+Features (things that add new or improved functionality) may be accepted, but will need to first be reviewed and approved by a [team member](https://github.com/Tim-Gaud/ksys-file-viewer/blob/master/AUTHORS.md). 
 
 ## Legal
 
-You will need to complete a [Contributor License Agreement (CLA)](https://github.com/plangrid/react-file-viewer/blob/master/CLA.md). Briefly, this agreement testifies that you are granting us permission to use the submitted change according to the terms of the project's license, and that the work being submitted is under appropriate copyright.
+You will need to complete a [Contributor License Agreement (CLA)](https://github.com/Tim-Gaud/ksys-file-viewer/blob/master/CLA.md). Briefly, this agreement testifies that you are granting us permission to use the submitted change according to the terms of the project's license, and that the work being submitted is under appropriate copyright.
 
 Please submit a Contributor License Agreement (CLA) before submitting a pull request. Once we have received the signed CLA, we'll review the request. 
 

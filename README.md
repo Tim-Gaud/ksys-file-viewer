@@ -16,7 +16,7 @@ Extendable file viewer for web. Forked from [react-file-viewer](https://github.c
 
 ## Usage
 
-Note this module works best with react 16+.  If you are using React < 16 you will likely need to use version 0.5. `npm install react-file-viewer@0.5.0`.
+Note this module works best with react 16+.
 
 There is one main React component, `FileViewer`, that takes the following props:
 
@@ -31,7 +31,7 @@ viewer fetching or rendering the requested resource. This is a place where you c
 pass a callback for a logging utility.
 
 `errorComponent` react element [optional]: A component to render in case of error
-instead of the default error component that comes packaged with react-file-viewer.
+instead of the default error component that comes packaged with ksys-file-viewer.
 
 `unsupportedComponent` react element [optional]: A component to render in case
 the file format is not supported.
@@ -42,7 +42,7 @@ To use a custom error component, you might do the following:
 // MyApp.js
 import React, { Component } from 'react';
 import logger from 'logging-library';
-import FileViewer from 'react-file-viewer';
+import FileViewer from 'ksys-file-viewer';
 import { CustomErrorComponent } from 'custom-error';
 
 const file = 'http://example.com/image.png'
