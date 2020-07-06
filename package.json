@@ -6,7 +6,7 @@
   "module": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/plangrid/react-file-viewer.git"
+    "url": "git+https://github.com/Tim-Gaud/ksys-file-viewer.git"
   },
   "scripts": {
     "dev": "webpack -d --watch",
@@ -19,27 +19,18 @@
     "tag-and-publish": "node ./scripts/publish.js",
     "compile": "tsc"
   },
-  "author": "PlanGrid <opensource@plangrid.com>",
+  "author": "",
   "contributors": [
     {
-      "name": "Alexei Schiopu",
-      "email": "alexxschiopu@gmail.com",
-      "url": "http://schiopu.me"
-    },
-    {
-      "name": "Aaron Norby",
-      "email": "aaron.norby@gmail.com"
-    },
-    {
-      "name": "Viktoriya Savkina",
-      "email": "viktoriya.savkina@gmail.com"
+      "name": "Tim Gaud",
+      "email": "tim@gaud.co.za"    
     }
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/plangrid/react-file-viewer/issues"
+    "url": "https://github.com/Tim-Gaud/ksys-file-viewer/issues"
   },
-  "homepage": "https://github.com/plangrid/react-file-viewer#readme",
+  "homepage": "https://github.com/Tim-Gaud/ksys-file-viewer#readme",
   "devDependencies": {
     "@babel/core": "^7.10.4",
     "@babel/preset-react": "^7.7.4",
