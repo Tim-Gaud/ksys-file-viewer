@@ -1,5 +1,3 @@
-// Copyright (c) 2017 PlanGrid, Inc.
-
 import React, { Component, ReactElement } from 'react';
 import XLSX from 'xlsx';
 

@@ -1,5 +1,3 @@
-// Copyright (c) 2017 PlanGrid, Inc.
-
 import React, { Component } from 'react';
 import withFetching from './fetch-wrapper';
 

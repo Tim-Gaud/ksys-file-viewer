@@ -1,5 +1,3 @@
-// Copyright (c) 2017 PlanGrid, Inc.
-
 import React, { Component } from 'react';
 import XViewer from '../../utils/xbim-viewer.debug.bundle';
 
