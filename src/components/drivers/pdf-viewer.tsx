@@ -2,7 +2,8 @@ import React from 'react';
 import VisibilitySensor from 'react-visibility-sensor';
 import { PDFJS } from 'pdfjs-dist/build/pdf.combined';
 import 'pdfjs-dist/web/compatibility';
-import { IFileViewerProps } from '../file-viewer';
+import { IFileViewerProps, TPageNavigationProps } from '../file-viewer';
+require('../../styles/pdf.scss');
 
 PDFJS.disableWorker = true;
 const INCREASE_PERCENTAGE = 0.2;
@@ -18,6 +19,8 @@ interface IPDFPageProps {
 
 interface IPDFPageState {
   isVisible: boolean;
+  width: number;
+  height: number;
 }
 
 export class PDFPage extends React.Component<IPDFPageProps, IPDFPageState> {
@@ -25,7 +28,9 @@ export class PDFPage extends React.Component<IPDFPageProps, IPDFPageState> {
   constructor(props) {
     super(props);
     this.state = {
-      isVisible: false
+      isVisible: false,
+      width: 670,
+      height: 870,
     };
 
     this.canvas = document.getElementById('temp-canvas');
@@ -65,9 +70,8 @@ export class PDFPage extends React.Component<IPDFPageProps, IPDFPageState> {
     const viewport = page.getViewport(scale + zoom);
     const { width, height } = viewport;
 
+    this.setState({ width, height })
     const context = this.canvas.getContext('2d');
-    this.canvas.width = width;
-    this.canvas.height = height;
 
     page.render({
       canvasContext: context,
@@ -77,13 +81,16 @@ export class PDFPage extends React.Component<IPDFPageProps, IPDFPageState> {
 
   render() {
     const { index } = this.props;
+    const { width, height } = this.state;
     return (
-      <div key={`page-${index}`} className="pdf-canvas">
-        {this.props.disableVisibilityCheck ? <canvas id={'temp-canvas'} ref={node => this.canvas = node} width="670" height="870" /> : (
-          <VisibilitySensor onChange={this.onChange} partialVisibility >
-            <canvas id={'temp-canvas'} ref={node => this.canvas = node} width="670" height="870" />
-          </VisibilitySensor>
-            )
+      <div key={`page-${index}`} className="pdf-canvas" style={{ height }}>
+        {this.props.disableVisibilityCheck ?
+          <canvas id={'temp-canvas'} ref={node => this.canvas = node} width={width} height={height} /> :
+          (
+            <VisibilitySensor onChange={this.onChange} partialVisibility >
+              <canvas id={'temp-canvas'} ref={node => this.canvas = node} width={width} height={height} />
+            </VisibilitySensor>
+          )
         }
       </div>
     );
@@ -105,6 +112,7 @@ export default class PDFDriver extends React.Component<IPDFDriverProps, any> {
       pdf: null,
       zoom: 0,
       percent: 0,
+      currentPage: 1,
     };
 
     this.increaseZoom = this.increaseZoom.bind(this);
@@ -119,7 +127,7 @@ export default class PDFDriver extends React.Component<IPDFDriverProps, any> {
   componentDidMount() {
     const { filePath } = this.props;
     const containerWidth = this.container.offsetWidth;
-    
+
     PDFJS.getDocument(filePath, null, null, this.progressCallback.bind(this)).then((pdf) => {
       this.setState({ pdf, containerWidth });
     });
@@ -150,17 +158,19 @@ export default class PDFDriver extends React.Component<IPDFDriverProps, any> {
   }
 
   renderPages() {
-    const { pdf, containerWidth, zoom } = this.state;
+    const { pdf, containerWidth, zoom, currentPage } = this.state;
     if (!pdf) return null;
     const pages = Array.apply(null, { length: pdf.numPages });
     return pages.map((v, i) => (
-      (<PDFPage
-        index={i + 1}
-        pdf={pdf}
-        containerWidth={containerWidth}
-        zoom={zoom * INCREASE_PERCENTAGE}
-        disableVisibilityCheck={this.props.disableVisibilityCheck}
-      />)
+      <div key={i}>
+        {i + 1 === currentPage && (<PDFPage
+          index={currentPage}
+          pdf={pdf}
+          containerWidth={containerWidth}
+          zoom={zoom * INCREASE_PERCENTAGE}
+          disableVisibilityCheck={this.props.disableVisibilityCheck}
+        />)}
+      </div>
     ));
   }
 
@@ -169,21 +179,58 @@ export default class PDFDriver extends React.Component<IPDFDriverProps, any> {
     return (<div className="pdf-loading">LOADING ({this.state.percent}%)</div>);
   }
 
+  previousPage() {
+    this.setState({ currentPage: Math.max(this.state.currentPage - 1, 1) })
+  }
+
+  nextPage() {
+    this.setState({ currentPage: Math.min(this.state.currentPage + 1, this.state.pdf.numPages) })
+  }
+
+  getNavigationProps(): TPageNavigationProps {
+    const { pdf, currentPage, zoom } = this.state;
+    return {
+      pageLeft: {
+        disabled: currentPage === 1,
+        onClick: this.previousPage.bind(this),
+      },
+      pageRight: {
+        disabled: pdf ? (currentPage === pdf.numPages) : true,
+        onClick: this.nextPage.bind(this),
+      },
+      navFooter: {
+        currentPage: currentPage,
+        totalPages: pdf ? pdf.numPages : 0,
+        zoomIn: this.increaseZoom.bind(this),
+        zoomOut: this.reduceZoom.bind(this),
+        currentZoomPerc: Math.floor(zoom * INCREASE_PERCENTAGE * 100),
+      },
+      idleState: this.props.idleState || false
+    }
+  }
+
   render() {
+    const PageNavControls = this.props.pageNavigationComponent;
+    const pageNavProps = this.getNavigationProps();
+
     return (
       <div className="pdf-viewer-container">
         <div className="pdf-viewer" ref={node => this.container = node} >
-          <div className="pdf-controlls-container">
-            <div className="view-control" onClick={this.increaseZoom} >
-              <i className="zoom-in" />
-            </div>
-            <div className="view-control" onClick={this.resetZoom}>
-              <i className="zoom-reset" />
-            </div>
-            <div className="view-control" onClick={this.reduceZoom}>
-              <i className="zoom-out" />
-            </div>
-          </div>
+          {PageNavControls ? (
+            <PageNavControls {...pageNavProps} />
+          ) : (
+              <div className="pdf-controlls-container">
+                <div className="view-control" onClick={this.increaseZoom} >
+                  <i className="zoom-in" />
+                </div>
+                <div className="view-control" onClick={this.resetZoom}>
+                  <i className="zoom-reset" />
+                </div>
+                <div className="view-control" onClick={this.reduceZoom}>
+                  <i className="zoom-out" />
+                </div>
+              </div>
+            )}
           {this.renderLoading()}
           {this.renderPages()}
         </div>

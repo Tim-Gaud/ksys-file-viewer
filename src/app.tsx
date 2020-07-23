@@ -12,9 +12,9 @@ const mp4 = '../example_files/small.mp4';
 const xlsx = '../example_files/SimpleSpreadsheet.xlsx';
 const photo360 = '../example_files/360photo.jpg';
 const avi = '../example_files/drop.avi';
-const webm = '../example_files/small.webm'
-const mov = '../example_files/step.mov'
-const mp3 = '../example_files/sample.mp3'
+const webm = '../example_files/small.webm';
+const mov = '../example_files/step.mov';
+const mp3 = '../example_files/sample.mp3';
 const rtf = '../example_files/sample.rtf';
 const pdf = '../example_files/sample.pdf';
 

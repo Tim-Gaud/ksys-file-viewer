@@ -2,7 +2,7 @@ import React, { Component, ReactElement } from 'react';
 import XLSX from 'xlsx';
 
 import CsvViewer from './csv-viewer';
-import { IFileViewerProps } from '../file-viewer';
+import { IFileViewerProps, TPageNavigationProps } from '../file-viewer';
 
 interface IXlxsViewerProps extends IFileViewerProps {
   width: number;
@@ -40,23 +40,13 @@ class XlxsViewer extends Component<IXlxsViewerProps, IXlxsViewerState> {
     return { sheets, names, curSheetIndex: 0 };
   }
 
-  renderSheetNames(names: string[]): ReactElement {
-    const sheets = names.map((name, index) => (
-      <input
-        key={name}
-        type="button"
-        value={name}
-        onClick={() => {
-          this.setState({ curSheetIndex: index });
-        }}
-      />
-    ));
 
-    return (
-      <div className="sheet-names">
-        {sheets}
-      </div>
-    );
+  previousSheet() {
+    this.setState({ curSheetIndex: this.state.curSheetIndex - 1 });
+  }
+
+  nextSheet() {
+    this.setState({ curSheetIndex: this.state.curSheetIndex + 1 });
   }
 
   renderSheetData(sheet: string): ReactElement {
@@ -66,11 +56,38 @@ class XlxsViewer extends Component<IXlxsViewerProps, IXlxsViewerState> {
     );
   }
 
+  getNavigationProps(names: string[]): TPageNavigationProps {
+    const { curSheetIndex } = this.state;
+    console.log(names.length);
+    return {
+      pageLeft: {
+        disabled: curSheetIndex === 0,
+        onClick: this.previousSheet.bind(this),
+      },
+      pageRight: {
+        disabled: (curSheetIndex + 1 === names.length),
+        onClick: this.nextSheet.bind(this),
+      },
+      navFooter: {
+        currentPage: curSheetIndex + 1,
+        totalPages: names.length,
+        zoomIn: () => { },// TODO,
+        zoomOut: () => { },// TODO
+        currentZoomPerc: 0,// TODO
+      },
+      idleState: false
+    }
+  }
+
   render() {
+    const PageNavControls = this.props.pageNavigationComponent;
     const { sheets, names, curSheetIndex } = this.state;
+    const pageNavProps = this.getNavigationProps(names);
     return (
       <div className="spreadsheet-viewer">
-        {this.renderSheetNames(names)}
+        {PageNavControls ? (
+          <PageNavControls {...pageNavProps} />
+        ) : null}
         {this.renderSheetData(sheets[curSheetIndex || 0])}
       </div>
     );

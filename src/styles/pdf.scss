@@ -1,0 +1,16 @@
+@import './main.scss';
+
+.pdf-viewer {
+	display: flex;
+	justify-content: center;
+}
+
+.pdf-canvas {
+	max-width: 654px;
+	overflow: scroll;
+	max-height: 100vh;
+	canvas {
+		min-width: 654px;
+	}
+}
+  
