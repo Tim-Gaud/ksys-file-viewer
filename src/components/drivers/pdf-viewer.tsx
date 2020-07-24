@@ -3,18 +3,19 @@ import VisibilitySensor from 'react-visibility-sensor';
 import { PDFJS } from 'pdfjs-dist/build/pdf.combined';
 import 'pdfjs-dist/web/compatibility';
 import { IFileViewerProps, TPageNavigationProps } from '../file-viewer';
-require('../../styles/pdf.scss');
+const styles = require('../../styles/pdf.scss');
 
 PDFJS.disableWorker = true;
 const INCREASE_PERCENTAGE = 0.2;
-const DEFAULT_SCALE = 1.1;
+const DEFAULT_SCALE = 1.0;
 
 interface IPDFPageProps {
   disableVisibilityCheck: boolean;
   zoom: any;
   index: number;
   pdf: any;
-  containerWidth: any
+  containerWidth: number;
+  containerHeight: number;
 }
 
 interface IPDFPageState {
@@ -64,8 +65,15 @@ export class PDFPage extends React.Component<IPDFPageProps, IPDFPageState> {
   }
 
   renderPage(page) {
-    const { containerWidth, zoom } = this.props;
-    const calculatedScale = (containerWidth / page.getViewport(DEFAULT_SCALE).width);
+    const { containerWidth, containerHeight, zoom } = this.props;
+
+    const isPortrait = page.getViewport(DEFAULT_SCALE).height > page.getViewport(DEFAULT_SCALE).width;
+    const containerRatio = containerWidth / containerHeight;
+
+    const calculatedScale = isPortrait || containerRatio >= 2 ?
+      (containerHeight / (page.getViewport(DEFAULT_SCALE).height)) :
+      (containerWidth / page.getViewport(DEFAULT_SCALE).width);
+      
     const scale = calculatedScale > DEFAULT_SCALE ? DEFAULT_SCALE : calculatedScale;
     const viewport = page.getViewport(scale + zoom);
     const { width, height } = viewport;
@@ -127,9 +135,10 @@ export default class PDFDriver extends React.Component<IPDFDriverProps, any> {
   componentDidMount() {
     const { filePath } = this.props;
     const containerWidth = this.container.offsetWidth;
+    const containerHeight = this.container.offsetHeight;
 
     PDFJS.getDocument(filePath, null, null, this.progressCallback.bind(this)).then((pdf) => {
-      this.setState({ pdf, containerWidth });
+      this.setState({ pdf, containerWidth, containerHeight });
     });
   }
 
@@ -145,7 +154,7 @@ export default class PDFDriver extends React.Component<IPDFDriverProps, any> {
   }
 
   reduceZoom() {
-    if (this.state.zoom === 0) return;
+    if (this.state.zoom <= -0.2) return;
     this.setZoom(this.state.zoom - 1);
   }
 
@@ -158,7 +167,7 @@ export default class PDFDriver extends React.Component<IPDFDriverProps, any> {
   }
 
   renderPages() {
-    const { pdf, containerWidth, zoom, currentPage } = this.state;
+    const { pdf, containerWidth, containerHeight, zoom, currentPage } = this.state;
     if (!pdf) return null;
     const pages = Array.apply(null, { length: pdf.numPages });
     return pages.map((v, i) => (
@@ -167,6 +176,7 @@ export default class PDFDriver extends React.Component<IPDFDriverProps, any> {
           index={currentPage}
           pdf={pdf}
           containerWidth={containerWidth}
+          containerHeight={containerHeight}
           zoom={zoom * INCREASE_PERCENTAGE}
           disableVisibilityCheck={this.props.disableVisibilityCheck}
         />)}
