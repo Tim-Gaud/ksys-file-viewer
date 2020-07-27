@@ -2,14 +2,11 @@
   height: 100%;
   display: flex;
   flex-direction: row;
-  width: 654px;
-  flex-direction: row;
   margin: auto;
   align-items: center;
-  justify-content: center;
 
   .pg-viewer {
-    height: 100%;
+    height: calc(100vh - 174px);
     position: relative;
     flex-grow: 2;
 

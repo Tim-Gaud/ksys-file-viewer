@@ -3,14 +3,13 @@
 .pdf-viewer {
 	display: flex;
 	justify-content: center;
+	height: calc(100vh - 174px);
+	max-width: 100vw;
 }
 
 .pdf-canvas {
-	max-width: 654px;
 	overflow: scroll;
-	max-height: 100vh;
-	canvas {
-		min-width: 654px;
-	}
+	max-height: calc(100vh - 174px);
+	max-width: 100vw;
 }
   
