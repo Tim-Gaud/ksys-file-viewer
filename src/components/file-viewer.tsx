@@ -19,7 +19,29 @@ export interface IFileViewerProps {
   onError?: (e?: Event) => null;
   errorComponent?: null;
   unsupportedComponent?: null;
+  pageNavigationComponent?: React.SFC<TPageNavigationProps>;
+  idleState?: boolean;
 }
+
+export type TPageNavigationProps = {
+  pageLeft: {
+      disabled: boolean;
+      onClick: () => void;
+  };
+  pageRight: {
+      disabled: boolean;
+      onClick: () => void;
+  };
+  navFooter: {
+      currentPage: number;
+      totalPages: number;
+      zoomIn: () => void;
+      zoomOut: () => void;
+      currentZoomPerc: number;
+  };
+  idleState: boolean;
+};
+
 
 interface IFileViewerState {
   width: number;
